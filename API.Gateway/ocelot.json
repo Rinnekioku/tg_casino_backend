@@ -9,7 +9,7 @@
           "Port": 3000
         }
       ],
-      "UpstreamPathTemplate": "/casino/{everything}",
+      "UpstreamPathTemplate": "/api/casino/{everything}",
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"]
     }
   ],
