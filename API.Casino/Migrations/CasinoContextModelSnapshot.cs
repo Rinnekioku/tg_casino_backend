@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Game.Migrations
+namespace API.Casino.Migrations
 {
     [DbContext(typeof(CasinoContext))]
     partial class CasinoContextModelSnapshot : ModelSnapshot

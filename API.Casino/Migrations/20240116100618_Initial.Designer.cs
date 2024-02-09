@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Game.Migrations
+namespace API.Casino.Migrations
 {
     [DbContext(typeof(CasinoContext))]
     [Migration("20240116100618_Initial")]

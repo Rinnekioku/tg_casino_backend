@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Game.Migrations
+namespace API.Casino.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

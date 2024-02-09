@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Common.CasinoServices.Services.Interfaces;
 
-namespace Game.Controllers;
+namespace API.Casino.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

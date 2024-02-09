@@ -1,7 +1,6 @@
 using Common.CasinoServices.Data;
 using Common.CasinoServices.Services;
 using Common.CasinoServices.Services.Interfaces;
-using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
