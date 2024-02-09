@@ -1,0 +1,26 @@
+﻿version: '3.8'
+
+services:
+  api.casino:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./API.Casino:/app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  api.gateway:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./API.Gateway:/app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  worker.telegram:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./Worker.Telegram:/app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
