@@ -16,6 +16,6 @@ public class TelegramLoginHandler : IEventHandler<TelegramLogin>
     {
         await Task.Yield();
 
-        _logger.LogDebug("User with {Username} logged in via telegram", @event.Username);
+        _logger.LogInformation("User with {Username} logged in via telegram", @event.Username);
     }
 }

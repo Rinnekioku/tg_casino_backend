@@ -33,7 +33,10 @@ public class RabbitMqEventBus : IEventBus
 
         var factory = new ConnectionFactory
         {
-            HostName = _hostName
+            HostName = _hostName,
+            Port = 5672,
+            UserName = "guest",
+            Password = "guest"
         };
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
@@ -48,7 +51,7 @@ public class RabbitMqEventBus : IEventBus
         where T : Event
         where TH : IEventHandler<T>
     {
-        var eventType = typeof(T).ToString();
+        var eventType = typeof(T).Name;
 
         _handlersRegistry.TryAdd(eventType, new Dictionary<Type, AsyncEventHandlerDelegate>());
         if (!_handlersRegistry[eventType].TryAdd(typeof(TH), async (string eventData) =>
@@ -70,6 +73,9 @@ public class RabbitMqEventBus : IEventBus
         var factory = new ConnectionFactory
         {
             HostName = _hostName,
+            Port = 5672,
+            UserName = "guest",
+            Password = "guest",
             DispatchConsumersAsync = true
         };
 

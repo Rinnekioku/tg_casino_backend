@@ -42,6 +42,7 @@ public class PlayerController : ControllerBase
     {
         try
         {
+            _eventBus.Publish(new TelegramLogin { Username = "testtest" });
             return Ok(await _playerService.RegisterPlayer(username));
         }
         catch (Exception)

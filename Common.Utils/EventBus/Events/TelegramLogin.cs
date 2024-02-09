@@ -2,5 +2,5 @@
 
 public class TelegramLogin : Event
 {
-    public string Username { get; }
+    public string Username { get; init; } = "";
 }

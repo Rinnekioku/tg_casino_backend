@@ -37,7 +37,7 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management
-    hostname: rabbit.mq
+    hostname: rabbitmq
     ports:
       - "4369:4369"
       - "5671:5671"
@@ -46,6 +46,8 @@ services:
       - "15671:15671"
       - "15672:15672"
     restart: on-failure
+    networks:
+      - backend
 
 networks:
   backend:
