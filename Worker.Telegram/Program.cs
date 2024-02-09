@@ -1,4 +1,5 @@
-﻿using Common.Utils.Extensions;
+﻿using Microsoft.Extensions.Configuration.UserSecrets;
+using Common.Utils.Extensions;
 using Common.Utils.Messaging.Events;
 using Common.Utils.Messaging.Interfaces;
 using Telegram.Bot;
@@ -17,7 +18,7 @@ builder.Services.AddTransient<TelegramLoginResponseHandler>();
 builder.Services.AddHttpClient("telegram_bot_client")
     .AddTypedClient<ITelegramBotClient>(httpClient =>
     {
-        TelegramBotClientOptions options = new(builder.Configuration.GetSection("Telegram").GetSection("Token").Value!);
+        TelegramBotClientOptions options = new(builder.Configuration["Telegram:Token"]!);
         return new TelegramBotClient(options, httpClient);
     });
 builder.Services.AddScoped<CallbackQueryHandler>();

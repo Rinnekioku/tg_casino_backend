@@ -47,4 +47,11 @@ public class PlayerController : ControllerBase
             return BadRequest($"User with username {username} already exists");
         }
     }
+
+    [HttpPost("TelegramLogin")]
+    public async Task<ActionResult<string>> TelegramLogin(string username)
+    {
+        await Task.Yield();
+        return Ok($"{username}_token");
+    }
 }
