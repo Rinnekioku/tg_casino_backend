@@ -9,16 +9,18 @@ using RabbitMQ.Client.Events;
 
 namespace Common.Utils.EventBus.RabbitMQ;
 
-public class RabbitMQEventBus : IEventBus
+public class RabbitMqEventBus : IEventBus
 {
     private delegate Task AsyncEventHandlerDelegate(string eventData);
 
+    private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly string _hostName;
-    private readonly ILogger<RabbitMQEventBus> _logger;
+    private readonly ILogger<RabbitMqEventBus> _logger;
     private readonly Dictionary<string, Dictionary<Type, AsyncEventHandlerDelegate>> _handlersRegistry;
 
-    public RabbitMQEventBus(string hostName, ILogger<RabbitMQEventBus> logger)
+    public RabbitMqEventBus(IServiceScopeFactory serviceScopeFactory, string hostName, ILogger<RabbitMqEventBus> logger)
     {
+        _serviceScopeFactory = serviceScopeFactory;
         _hostName = hostName;
         _logger = logger;
         _handlersRegistry = new Dictionary<string, Dictionary<Type, AsyncEventHandlerDelegate>>();
@@ -29,7 +31,7 @@ public class RabbitMQEventBus : IEventBus
     {
         await Task.Yield();
 
-        var factory = new ConnectionFactory()
+        var factory = new ConnectionFactory
         {
             HostName = _hostName
         };
@@ -44,15 +46,16 @@ public class RabbitMQEventBus : IEventBus
 
     public void On<T, TH>()
         where T : Event
-        where TH : IEventHandler<T>, new()
+        where TH : IEventHandler<T>
     {
         var eventType = typeof(T).ToString();
 
         _handlersRegistry.TryAdd(eventType, new Dictionary<Type, AsyncEventHandlerDelegate>());
         if (!_handlersRegistry[eventType].TryAdd(typeof(TH), async (string eventData) =>
             {
-                var @event = (T)JsonConvert.DeserializeObject(eventData, typeof(T))!;
-                var handler = new TH();
+                using var scope = _serviceScopeFactory.CreateScope();
+                var @event = JsonConvert.DeserializeObject<T>(eventData)!;
+                var handler = scope.ServiceProvider.GetRequiredService<TH>();
                 await handler.Handle(@event);
             }))
         {

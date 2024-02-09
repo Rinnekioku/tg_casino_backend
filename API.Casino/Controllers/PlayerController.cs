@@ -1,6 +1,9 @@
-﻿using Common.CasinoServices.Models;
+﻿using API.Casino.EventHandlers;
+using Common.CasinoServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Common.CasinoServices.Services.Interfaces;
+using Common.Utils.EventBus.Events;
+using Common.Utils.EventBus.Interfaces;
 
 namespace API.Casino.Controllers;
 
@@ -9,10 +12,14 @@ namespace API.Casino.Controllers;
 public class PlayerController : ControllerBase
 {
     private readonly IPlayerService _playerService;
+    private readonly IEventBus _eventBus;
 
-    public PlayerController(IPlayerService playerService)
+    public PlayerController(IPlayerService playerService, IEventBus eventBus)
     {
         _playerService = playerService;
+        _eventBus = eventBus;
+
+        _eventBus.On<TelegramLogin, TelegramLoginHandler>();
     }
 
     // Endpoint for increasing player score

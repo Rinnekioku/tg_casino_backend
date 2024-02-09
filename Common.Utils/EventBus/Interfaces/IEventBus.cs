@@ -8,5 +8,5 @@ public interface IEventBus
 
     public void On<T, TH>() 
         where T : Event
-        where TH : IEventHandler<T>, new();
+        where TH : IEventHandler<T>;
 }
