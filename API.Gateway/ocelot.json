@@ -5,8 +5,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "casino.service",
-          "Port": 3000
+          "Host": "api.casino",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/casino/{everything}",

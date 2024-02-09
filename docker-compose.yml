@@ -11,9 +11,11 @@ services:
     restart: on-failure
     networks:
       - backend
+    depends_on:
+      - rabbitmq
 
   api.gateway:
-    container_name: ap
+    container_name: api.gateway
     build:
       context: ./API.Gateway
     ports:
@@ -25,8 +27,24 @@ services:
       - api.casino
 
   worker.telegram:
+    container_name: worker_telegram
     build:
       context: ./Worker.Telegram
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    hostname: "rabbitmq"
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "25672:25672"
+      - "15671:15671"
+      - "15672:15672"
     restart: on-failure
 
 networks:
