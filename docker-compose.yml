@@ -21,10 +21,10 @@ services:
     ports:
       - "8001:80"
     restart: on-failure
-    networks:
-      - backend
     depends_on:
       - api.casino
+    networks:
+      - backend
 
   worker.telegram:
     container_name: worker_telegram
@@ -33,6 +33,8 @@ services:
     restart: on-failure
     depends_on:
       - rabbitmq
+    networks:
+      - backend
 
   rabbitmq:
     container_name: rabbitmq

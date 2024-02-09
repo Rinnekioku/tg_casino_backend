@@ -1,9 +1,10 @@
-﻿using API.Casino.EventHandlers;
+﻿using API.Casino.Messaging.Handlers;
 using Common.CasinoServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Common.CasinoServices.Services.Interfaces;
-using Common.Utils.EventBus.Events;
-using Common.Utils.EventBus.Interfaces;
+using Common.Utils.Messaging.Events;
+using Common.Utils.Messaging.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Casino.Controllers;
 
@@ -12,18 +13,15 @@ namespace API.Casino.Controllers;
 public class PlayerController : ControllerBase
 {
     private readonly IPlayerService _playerService;
-    private readonly IEventBus _eventBus;
 
-    public PlayerController(IPlayerService playerService, IEventBus eventBus)
+    public PlayerController(IPlayerService playerService)
     {
         _playerService = playerService;
-        _eventBus = eventBus;
-
-        _eventBus.On<TelegramLogin, TelegramLoginHandler>();
     }
 
     // Endpoint for increasing player score
     [HttpPost("IncreaseScore")]
+    [Authorize]
     public async Task<ActionResult<Player>> IncreasePlayerScore(string username, int points)
     {
         try
@@ -42,7 +40,6 @@ public class PlayerController : ControllerBase
     {
         try
         {
-            _eventBus.Publish(new TelegramLogin { Username = "testtest" });
             return Ok(await _playerService.RegisterPlayer(username));
         }
         catch (Exception)

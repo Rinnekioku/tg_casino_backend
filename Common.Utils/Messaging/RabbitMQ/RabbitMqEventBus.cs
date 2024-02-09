@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using Microsoft.Extensions.DependencyInjection;
-using Common.Utils.EventBus.Events;
-using Common.Utils.EventBus.Interfaces;
+using Common.Utils.Messaging.Events;
+using Common.Utils.Messaging.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Common.Utils.EventBus.RabbitMQ;
+namespace Common.Utils.Messaging.RabbitMQ;
 
 public class RabbitMqEventBus : IEventBus
 {
@@ -16,14 +16,14 @@ public class RabbitMqEventBus : IEventBus
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly string _hostName;
     private readonly ILogger<RabbitMqEventBus> _logger;
-    private readonly Dictionary<string, Dictionary<Type, AsyncEventHandlerDelegate>> _handlersRegistry;
+    private readonly Dictionary<string, Dictionary<Type, AsyncEventHandlerDelegate>> _eventHandlersRegistry;
 
     public RabbitMqEventBus(IServiceScopeFactory serviceScopeFactory, string hostName, ILogger<RabbitMqEventBus> logger)
     {
         _serviceScopeFactory = serviceScopeFactory;
         _hostName = hostName;
         _logger = logger;
-        _handlersRegistry = new Dictionary<string, Dictionary<Type, AsyncEventHandlerDelegate>>();
+        _eventHandlersRegistry = new Dictionary<string, Dictionary<Type, AsyncEventHandlerDelegate>>();
     }
 
     public async Task Publish<T>(T @event)
@@ -53,8 +53,8 @@ public class RabbitMqEventBus : IEventBus
     {
         var eventType = typeof(T).Name;
 
-        _handlersRegistry.TryAdd(eventType, new Dictionary<Type, AsyncEventHandlerDelegate>());
-        if (!_handlersRegistry[eventType].TryAdd(typeof(TH), async (string eventData) =>
+        _eventHandlersRegistry.TryAdd(eventType, new Dictionary<Type, AsyncEventHandlerDelegate>());
+        if (!_eventHandlersRegistry[eventType].TryAdd(typeof(TH), async eventData =>
             {
                 using var scope = _serviceScopeFactory.CreateScope();
                 var @event = JsonConvert.DeserializeObject<T>(eventData)!;
@@ -62,7 +62,7 @@ public class RabbitMqEventBus : IEventBus
                 await handler.Handle(@event);
             }))
         {
-            _logger.LogWarning("EventHandler with type {EventName} already registered", eventType);
+            _logger.LogWarning("EventHandler with type {EventHandlerType} already registered", typeof(TH).Name);
         }
 
         Listen<T>();
@@ -96,7 +96,7 @@ public class RabbitMqEventBus : IEventBus
         var eventType = e.RoutingKey;
         var eventData = Encoding.UTF8.GetString(e.Body.Span);
 
-        if (_handlersRegistry.TryGetValue(eventType, out var eventHandlers))
+        if (_eventHandlersRegistry.TryGetValue(eventType, out var eventHandlers))
         {
             try
             {

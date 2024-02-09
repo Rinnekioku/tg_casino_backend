@@ -1,4 +1,4 @@
-﻿namespace Common.Utils.EventBus.Events;
+﻿namespace Common.Utils.Messaging.Events;
 
 public abstract class Event
 {

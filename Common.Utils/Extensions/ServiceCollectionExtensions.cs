@@ -1,5 +1,5 @@
-﻿using Common.Utils.EventBus.Interfaces;
-using Common.Utils.EventBus.RabbitMQ;
+﻿using Common.Utils.Messaging.Interfaces;
+using Common.Utils.Messaging.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

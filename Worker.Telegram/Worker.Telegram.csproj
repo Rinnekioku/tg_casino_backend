@@ -20,4 +20,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Common.Utils\Common.Utils.csproj" />
+    </ItemGroup>
+
 </Project>

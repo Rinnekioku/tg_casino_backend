@@ -1,6 +1,6 @@
-﻿using Common.Utils.EventBus.Events;
+﻿using Common.Utils.Messaging.Events;
 
-namespace Common.Utils.EventBus.Interfaces;
+namespace Common.Utils.Messaging.Interfaces;
 
 public interface IEventBus
 {

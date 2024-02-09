@@ -2,15 +2,15 @@
 using Telegram.Bot.Types;
 using Worker.Telegram.Enums;
 
-namespace Worker.Telegram.Services.EventDispatcher.Handlers;
+namespace Worker.Telegram.Services.TelegramWebhookDispatching.Handlers;
 
-public class MessageHandler : EventHandlerBase
+public class MessageHandler : UpdateHandlerBase
 {
     public MessageHandler(ITelegramBotClient botClient) : base(botClient)
     {
     }
 
-    public override async Task Process(Update update, CancellationToken cancellationToken)
+    public override async Task Handle(Update update, CancellationToken cancellationToken)
     {
         var message = update.Message!;
         string messageEventString = message.Text!;
@@ -28,7 +28,7 @@ public class MessageHandler : EventHandlerBase
         {
             case BotMessageEvent.Start:
             {
-                await _botClient.SendGameAsync(
+                await BotClient.SendGameAsync(
                     chatId: message.Chat.Id,
                     cancellationToken: cancellationToken,
                     gameShortName: "aff_casino");
@@ -36,7 +36,7 @@ public class MessageHandler : EventHandlerBase
             }
             case BotMessageEvent.Play:
             {
-                await _botClient.SendGameAsync(
+                await BotClient.SendGameAsync(
                     chatId: message.Chat.Id,
                     cancellationToken: cancellationToken,
                     gameShortName: "aff_casino");
