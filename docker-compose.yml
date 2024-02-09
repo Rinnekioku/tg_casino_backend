@@ -1,0 +1,31 @@
+﻿version: '3.8'
+
+services:
+  api.casino:
+    build:
+      context: ./API.Casino
+    restart: on-failure
+    networks:
+      backend:
+        aliases:
+          - casino.service
+
+  api.gateway:
+    build:
+      context: ./API.Gateway
+    ports:
+      - "80:80"
+    restart: on-failure
+    networks:
+      backend:
+    depends_on:
+      - api.casino
+
+  worker.telegram:
+    build:
+      context: ./Worker.Telegram
+    restart: on-failure
+
+networks:
+  backend:
+    driver: bridge

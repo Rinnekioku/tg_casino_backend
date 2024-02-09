@@ -1,8 +1,8 @@
-﻿using API.Telegram.Services.Abstract;
-using API.Telegram.Services.EventDispatcher;
-using Telegram.Bot;
+﻿using Telegram.Bot;
+using Worker.Telegram.Services.Abstract;
+using Worker.Telegram.Services.EventDispatcher;
 
-namespace API.Telegram.Services;
+namespace Worker.Telegram.Services;
 
 // Compose Receiver and UpdateHandler implementation
 public class ReceiverService : ReceiverServiceBase<EventDispatcherService>

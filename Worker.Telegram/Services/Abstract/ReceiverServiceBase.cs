@@ -1,9 +1,9 @@
-﻿using API.Telegram.Services.Interfaces;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
+using Worker.Telegram.Services.Interfaces;
 
-namespace API.Telegram.Services.Abstract;
+namespace Worker.Telegram.Services.Abstract;
 
 /// <summary>
 /// An abstract class to compose Receiver Service and Update Handler classes

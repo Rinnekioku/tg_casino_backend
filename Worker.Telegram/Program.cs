@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot;
-using API.Telegram.Services;
-using API.Telegram.Services.EventDispatcher;
+using Worker.Telegram.Services;
+using Worker.Telegram.Services.EventDispatcher;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<EventDispatcherService>();

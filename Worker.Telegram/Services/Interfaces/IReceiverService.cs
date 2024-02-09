@@ -1,4 +1,4 @@
-﻿namespace API.Telegram.Services.Interfaces;
+﻿namespace Worker.Telegram.Services.Interfaces;
 
 /// <summary>
 /// A marker interface for Update Receiver service

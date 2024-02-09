@@ -1,8 +1,8 @@
-﻿using API.Telegram.Enums;
+﻿using Worker.Telegram.Enums;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace API.Telegram.Services.EventDispatcher.Handlers;
+namespace Worker.Telegram.Services.EventDispatcher.Handlers;
 
 public class EventHandlerBase : IEventHandler
 {
@@ -13,7 +13,7 @@ public class EventHandlerBase : IEventHandler
         _botClient = botClient;
     }
 
-    public virtual Task Process(Update update)
+    public virtual Task Process(Update update, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

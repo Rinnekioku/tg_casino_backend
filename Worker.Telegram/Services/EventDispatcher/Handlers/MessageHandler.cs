@@ -1,8 +1,8 @@
-﻿using API.Telegram.Enums;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using Worker.Telegram.Enums;
 
-namespace API.Telegram.Services.EventDispatcher.Handlers;
+namespace Worker.Telegram.Services.EventDispatcher.Handlers;
 
 public class MessageHandler : EventHandlerBase
 {
@@ -10,7 +10,7 @@ public class MessageHandler : EventHandlerBase
     {
     }
 
-    public override async Task Process(Update update)
+    public override async Task Process(Update update, CancellationToken cancellationToken)
     {
         var message = update.Message!;
         string messageEventString = message.Text!;
@@ -30,6 +30,7 @@ public class MessageHandler : EventHandlerBase
             {
                 await _botClient.SendGameAsync(
                     chatId: message.Chat.Id,
+                    cancellationToken: cancellationToken,
                     gameShortName: "aff_casino");
                 break;
             }
@@ -37,6 +38,7 @@ public class MessageHandler : EventHandlerBase
             {
                 await _botClient.SendGameAsync(
                     chatId: message.Chat.Id,
+                    cancellationToken: cancellationToken,
                     gameShortName: "aff_casino");
                 break;
             }

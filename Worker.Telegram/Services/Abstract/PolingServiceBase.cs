@@ -1,6 +1,6 @@
-﻿using API.Telegram.Services.Interfaces;
+﻿using Worker.Telegram.Services.Interfaces;
 
-namespace API.Telegram.Services.Abstract;
+namespace Worker.Telegram.Services.Abstract;
 
 // A background service consuming a scoped service.
 // See more: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services#consuming-a-scoped-service-in-a-background-task

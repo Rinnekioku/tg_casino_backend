@@ -1,0 +1,17 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "casino.service",
+          "Port": 3000
+        }
+      ],
+      "UpstreamPathTemplate": "/casino/{everything}",
+      "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"]
+    }
+  ],
+  "GlobalConfiguration": {}
+}

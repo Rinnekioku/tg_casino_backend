@@ -1,6 +1,6 @@
-﻿using API.Telegram.Services.Abstract;
+﻿using Worker.Telegram.Services.Abstract;
 
-namespace API.Telegram.Services;
+namespace Worker.Telegram.Services;
 
 // Compose Polling and ReceiverService implementations
 public class PollingService : PollingServiceBase<ReceiverService>

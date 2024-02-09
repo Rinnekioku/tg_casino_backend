@@ -1,4 +1,4 @@
-﻿namespace API.Telegram.Enums;
+﻿namespace Worker.Telegram.Enums;
 
 public enum BotMessageEvent
 {
