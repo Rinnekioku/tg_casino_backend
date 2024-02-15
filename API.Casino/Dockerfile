@@ -5,7 +5,7 @@ EXPOSE 3000
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["API.Casino/API.Casino.csproj", "API.Casino/"]
-COPY ["Common.CasinoServices/Common.CasinoServices.csproj", "Common.CasinoServices/"]
+COPY ["API.Casino/API.Casino.csproj", "API.Casino/"]
 RUN dotnet restore "API.Casino/API.Casino.csproj"
 COPY . .
 WORKDIR "/src/API.Casino"

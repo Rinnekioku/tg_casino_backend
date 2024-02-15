@@ -1,4 +1,4 @@
-﻿namespace Common.CasinoServices.Exceptions;
+﻿namespace API.Casino.Exceptions;
 
 public class AlreadyExistsException : Exception
 {

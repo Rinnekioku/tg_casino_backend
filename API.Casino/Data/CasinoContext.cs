@@ -1,7 +1,7 @@
-﻿using Common.CasinoServices.Models;
+﻿using API.Casino.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Common.CasinoServices.Data;
+namespace API.Casino.Data;
 
 public class CasinoContext : DbContext
 {

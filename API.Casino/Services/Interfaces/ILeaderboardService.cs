@@ -1,6 +1,6 @@
-﻿using Common.CasinoServices.Models;
+﻿using API.Casino.Models;
 
-namespace Common.CasinoServices.Services.Interfaces;
+namespace API.Casino.Services.Interfaces;
 
 public interface ILeaderboardService
 {

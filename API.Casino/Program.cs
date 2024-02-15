@@ -1,7 +1,13 @@
+using System.Text;
+using API.Casino.Data;
 using API.Casino.Messaging.Handlers;
-using Common.CasinoServices.Data;
-using Common.CasinoServices.Services;
-using Common.CasinoServices.Services.Interfaces;
+using API.Casino.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using API.Casino.Services;
+using API.Casino.Services.Interfaces;
+using Common.Utils.Data;
+using Common.Utils.Data.Interfaces;
 using Common.Utils.Extensions;
 using Common.Utils.Messaging.Events;
 using Common.Utils.Messaging.Interfaces;
@@ -13,10 +19,31 @@ builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<TelegramLoginRequestHandler>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddUtilityServices(builder.Configuration);
-builder.Services.AddDbContext<CasinoContext>(options =>
+
+var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
+var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!))
+        };
+    });
+builder.Services.AddDbContext<DbContext, CasinoContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("API.Casino")));
+
+builder.Services.AddScoped<IRepository<Player>, EntityFrameworkRepository<Player>>();
 
 var app = builder.Build();
 

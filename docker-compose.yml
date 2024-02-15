@@ -25,6 +25,9 @@ services:
       - api.casino
     networks:
       - backend
+    # Remove this volume on Linux also development only volume 
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
   worker.telegram:
     container_name: worker_telegram

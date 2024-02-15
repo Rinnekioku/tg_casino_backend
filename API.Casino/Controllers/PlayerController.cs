@@ -1,7 +1,7 @@
 ﻿using API.Casino.Messaging.Handlers;
-using Common.CasinoServices.Models;
+using API.Casino.Models;
 using Microsoft.AspNetCore.Mvc;
-using Common.CasinoServices.Services.Interfaces;
+using API.Casino.Services.Interfaces;
 using Common.Utils.Messaging.Events;
 using Common.Utils.Messaging.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -17,41 +17,5 @@ public class PlayerController : ControllerBase
     public PlayerController(IPlayerService playerService)
     {
         _playerService = playerService;
-    }
-
-    // Endpoint for increasing player score
-    [HttpPost("IncreaseScore")]
-    [Authorize]
-    public async Task<ActionResult<Player>> IncreasePlayerScore(string username, int points)
-    {
-        try
-        {
-            return Ok(await _playerService.IncreasePlayerScore(username, points));
-        }
-        catch (Exception)
-        {
-            return BadRequest($"User with username {username} not found");
-        }
-    }
-
-    // Endpoint for registering a player
-    [HttpPost("Register")]
-    public async Task<ActionResult<Player>> RegisterPlayer(string username)
-    {
-        try
-        {
-            return Ok(await _playerService.RegisterPlayer(username));
-        }
-        catch (Exception)
-        {
-            return BadRequest($"User with username {username} already exists");
-        }
-    }
-
-    [HttpPost("TelegramLogin")]
-    public async Task<ActionResult<string>> TelegramLogin(string username)
-    {
-        await Task.Yield();
-        return Ok($"{username}_token");
     }
 }
