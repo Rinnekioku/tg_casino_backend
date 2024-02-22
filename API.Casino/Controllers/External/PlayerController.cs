@@ -6,9 +6,9 @@ using Common.Utils.Messaging.Events;
 using Common.Utils.Messaging.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
-namespace API.Casino.Controllers;
+namespace API.Casino.Controllers.External;
 
-[Route("api/[controller]")]
+[Route("api/external/[controller]")]
 [ApiController]
 public class PlayerController : ControllerBase
 {
@@ -17,5 +17,12 @@ public class PlayerController : ControllerBase
     public PlayerController(IPlayerService playerService)
     {
         _playerService = playerService;
+    }
+
+    [HttpPost("Test")]
+    public async Task<ActionResult<string>> Test()
+    {
+        await Task.Yield();
+        return Ok("Test");
     }
 }

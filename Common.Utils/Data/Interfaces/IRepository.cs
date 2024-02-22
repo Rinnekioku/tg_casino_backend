@@ -4,6 +4,8 @@ namespace Common.Utils.Data.Interfaces;
 
 public interface IRepository<T>
 {
+    public Task<bool> ContainsByPredicateAsync(Expression<Func<T, bool>> predicate);
+
     public Task<T?> GetByPredicateAsync(Expression<Func<T, bool>> predicate);
 
     public Task<T?> GetByIdAsync(int id);

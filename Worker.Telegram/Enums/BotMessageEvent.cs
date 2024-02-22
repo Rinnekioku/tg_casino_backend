@@ -3,5 +3,6 @@
 public enum BotMessageEvent
 {
     Start,
-    Play
+    Play,
+    Referral
 }

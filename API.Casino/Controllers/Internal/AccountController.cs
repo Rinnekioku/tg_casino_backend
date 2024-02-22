@@ -1,11 +1,11 @@
-﻿using API.Casino.Requests;
+﻿using Common.Utils.DTOs.Account;
 using API.Casino.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Casino.Controllers;
+namespace API.Casino.Controllers.Internal;
 
-[Route("api/[controller]")]
+[Route("api/internal/[controller]")]
 [ApiController]
 public class AccountController : ControllerBase
 {
@@ -17,10 +17,9 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("TelegramLogin")]
-    public async Task<IActionResult> TelegramLogin([FromBody] TelegramLoginRequest request)
+    public async Task<ActionResult<TelegramLoginResponse>> TelegramLogin([FromBody] TelegramLoginRequest request)
     {
-        var result = new
-            { token = await _accountService.TelegramLogin(request.TelegramUsername, request.ReferralCode) };
-        return Ok(result);
+        return Ok(new TelegramLoginResponse
+            { Token = await _accountService.TelegramLogin(request.TelegramUsername) });
     }
 }

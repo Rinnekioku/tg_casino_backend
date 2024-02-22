@@ -2,6 +2,8 @@ using System.Text;
 using API.Casino.Data;
 using API.Casino.Messaging.Handlers;
 using API.Casino.Models;
+using API.Casino.Repositories;
+using API.Casino.Repositories.Iterfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using API.Casino.Services;
@@ -20,6 +22,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<TelegramLoginRequestHandler>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IReferralService, ReferralService>();
+builder.Services.AddScoped<ILeaderboardService, LeaderboardService>();
 builder.Services.AddUtilityServices(builder.Configuration);
 
 var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
@@ -44,6 +48,7 @@ builder.Services.AddDbContext<DbContext, CasinoContext>(options =>
         b => b.MigrationsAssembly("API.Casino")));
 
 builder.Services.AddScoped<IRepository<Player>, EntityFrameworkRepository<Player>>();
+builder.Services.AddScoped<ILeaderboardRepository, LeaderboardRepository>();
 
 var app = builder.Build();
 

@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
-using Common.Utils.Messaging.Events;
+using Common.Utils.DTOs.Account;
 using Common.Utils.Messaging.Interfaces;
 using Newtonsoft.Json;
 using Worker.Telegram.Enums;
@@ -16,11 +16,8 @@ public class CallbackQueryHandler : UpdateHandlerBase
         public string Token { get; set; }
     }
 
-    private readonly IEventBus _eventBus;
-
-    public CallbackQueryHandler(ITelegramBotClient botClient, IEventBus eventBus) : base(botClient)
+    public CallbackQueryHandler(ITelegramBotClient botClient) : base(botClient)
     {
-        _eventBus = eventBus;
     }
 
     public override async Task Handle(Update update, CancellationToken cancellationToken)
@@ -41,11 +38,12 @@ public class CallbackQueryHandler : UpdateHandlerBase
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
-            var payload = $"{{ \"TelegramUsername\": \"{update.CallbackQuery?.From.Username}\" }}";
-            HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
+            var payload = new TelegramLoginRequest { TelegramUsername = update.CallbackQuery?.From.Username! };
+            HttpContent content =
+                new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
             var responseJsonString =
-                await (await client.PostAsync($"http://api.casino:80/api/account/TelegramLogin?username", content))
+                await (await client.PostAsync($"http://api.casino:80/api/internal/account/TelegramLogin?username", content))
                     .Content.ReadAsStringAsync();
             var responseJson = JsonConvert.DeserializeObject<TelegramLoginResponse>(responseJsonString);
             await BotClient.AnswerCallbackQueryAsync(

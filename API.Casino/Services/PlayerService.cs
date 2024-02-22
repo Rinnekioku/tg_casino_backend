@@ -1,4 +1,5 @@
-﻿using API.Casino.Models;
+﻿using API.Casino.Enums;
+using API.Casino.Models;
 using API.Casino.Services.Interfaces;
 using Common.Utils.Data.Interfaces;
 
@@ -7,32 +8,44 @@ namespace API.Casino.Services;
 public class PlayerService : IPlayerService
 {
     private readonly IRepository<Player> _playerRepository;
+    private readonly IReferralService _referralService;
 
-    public PlayerService(IRepository<Player> playerRepository)
+    public PlayerService(IRepository<Player> playerRepository, IReferralService referralService)
     {
         _playerRepository = playerRepository;
+        _referralService = referralService;
     }
 
-    public async Task<Player> SetupPlayerAsync(string telegramUsername, string referralCode)
+    public async Task<Player> SetupPlayerAsync(string telegramUsername)
     {
-        var existingPlayer =
+        Player? player =
             await _playerRepository.GetByPredicateAsync(player => player.TelegramUsername == telegramUsername);
-        if (existingPlayer != null)
+        if (player?.IsSetupComplete ?? false)
         {
-            return existingPlayer;
+            return player;
         }
 
-        var newPlayer = new Player
-            { TelegramUsername = telegramUsername, ReferralCode = new Guid().ToString(), Spins = 10, Score = 0 };
-        await _playerRepository.AddAsync(newPlayer);
+        if (player is null)
+        {
+            player = new Player
+            {
+                TelegramUsername = telegramUsername,
+                ReferralCode = Guid.NewGuid().ToString(),
+                Spins = 10,
+                Score = 0,
+                IsSetupComplete = true,
+                ReferralStatus = ReferralStatus.Unreferred.ToString()
+            };
+            await _playerRepository.AddAsync(player);
+        }
+        else
+        {
+            player.IsSetupComplete = true;
+            await _playerRepository.UpdateAsync(player);
+        }
 
-        return newPlayer;
-    }
+        await _referralService.TryApproveReferral(telegramUsername);
 
-    public async Task<Player> IncreasePlayerScoreAsync(string username, int points)
-    {
-        // @TODO: Implement spin logic in separate service
-        await Task.Yield();
-        return new Player();
+        return player;
     }
 }

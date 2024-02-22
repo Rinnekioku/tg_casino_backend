@@ -9,5 +9,16 @@ public class CasinoContext : DbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<Player>()
+            .HasOne(e => e.Referrer)
+            .WithMany(e => e.Referrals)
+            .HasForeignKey(e => e.ReferrerId)
+            .IsRequired(false);
+    }
+
     public DbSet<Player> Players { get; set; }
 }

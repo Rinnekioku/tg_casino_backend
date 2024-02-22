@@ -2,5 +2,5 @@
 
 public interface IAccountService
 {
-    public Task<string> TelegramLogin(string telegramUsername, string referralCode);
+    public Task<string> TelegramLogin(string telegramUsername);
 }

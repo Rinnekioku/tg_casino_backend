@@ -21,7 +21,7 @@ public class AccountService : IAccountService
     }
 
     // @TODO: Make proper referral system
-    public async Task<string> TelegramLogin(string telegramUsername, string referralCode)
+    public async Task<string> TelegramLogin(string telegramUsername)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -34,13 +34,13 @@ public class AccountService : IAccountService
 
         var token = new JwtSecurityTokenHandler().WriteToken(secToken);
 
-        await OnFirstLogin(telegramUsername, referralCode);
+        await OnFirstLogin(telegramUsername);
 
         return token;
     }
 
-    private async Task OnFirstLogin(string telegramUsername, string referralCode)
+    private async Task OnFirstLogin(string telegramUsername)
     {
-        await _playerService.SetupPlayerAsync(telegramUsername, referralCode);
+        await _playerService.SetupPlayerAsync(telegramUsername);
     }
 }

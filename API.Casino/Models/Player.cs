@@ -10,15 +10,26 @@ public class Player
 
     [Column(TypeName = "VARCHAR")]
     [StringLength(256)]
-    public string TelegramUsername { get; init; } = null!;
+    public required string TelegramUsername { get; init; } = null!;
 
     [Column(TypeName = "VARCHAR")]
     [StringLength(36)]
-    public string ReferralCode { get; init; } = null!;
+    public required string ReferralCode { get; init; } = null!;
 
     [Column(TypeName = "int")]
-    public int Score { get; set; }
+    public required int Score { get; set; }
 
     [Column(TypeName = "int")]
-    public int Spins { get; set; }
+    public required int Spins { get; set; }
+
+    public ICollection<Player> Referrals { get; set; }
+    
+    public int? ReferrerId { get; set; }
+    public Player? Referrer { get; set; }
+
+    public required bool IsSetupComplete { get; set; }
+    
+    [Column(TypeName = "VARCHAR")]
+    [StringLength(36)]
+    public required string ReferralStatus { get; set; } = null!;
 }

@@ -1,4 +1,4 @@
-﻿namespace API.Casino.Requests;
+﻿namespace Common.Utils.DTOs.Account;
 
 public class TelegramLoginRequest
 {
